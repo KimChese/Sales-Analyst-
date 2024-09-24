@@ -26,12 +26,73 @@ There is potential to explore strategies to optimize these categories and boost 
 ## Dashboard Preview
 Here’s a preview of the Power BI dashboard created for this project:
 ![image](https://github.com/user-attachments/assets/a4851918-c8a5-4152-b530-f7fca9572663)
+![Model relationship .png](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a748e1-4da4-49f8-ac79-9b11929478dc/8bee3ae7-d4cf-4373-a465-39d65bc6c2ac/Model_relationship_.png)
 
 
 
 The full dashboard file is available [here]https://drive.google.com/file/d/13AsjpE59YyU_orxxG_WdxcDo3xW8EEbW/view?usp=sharing.
 
 ## SQL Queries
-You can find the SQL queries used for data extraction and cleaning in the  folder.
+
+
+USE AdventureWorksDW2019;
+GO
+CREATE VIEW dbo.Customer_view AS
+select
+    f.CustomerKey,
+    CONCAT(FirstName,' ', LastName) as FullName,
+    SalesTerritoryCountry,
+    YEAR(OrderDate) as OrderYear,
+    COUNT(distinct SalesOrderNumber) as NumberOfOrder,
+    round(sum(SalesAmount*EndOfDayRate),2) as TotalSalesUSD,
+    round(sum((TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalCostUSD,
+    round(sum(SalesAmount*EndOfDayRate-(TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalProfitUSD
+from FactInternetSales f
+left join DimCustomer c on f.CustomerKey=c.CustomerKey
+left join FactCurrencyRate cr on f.CurrencyKey=cr.CurrencyKey and f.OrderDateKey=cr.DateKey
+left join DimSalesTerritory terri on f.SalesTerritoryKey = terri.SalesTerritoryKey
+group by f.CustomerKey, FirstName, LastName, SalesTerritoryCountry, YEAR(OrderDate);
+Go
+
+
+USE AdventureWorksDW2019;
+GO
+CREATE VIEW dbo.Reseller_view AS
+select
+    f.ResellerKey,
+    ResellerName,
+    SalesTerritoryCountry,
+    YEAR(OrderDate) as OrderYear,
+    COUNT(distinct SalesOrderNumber) as NumberOfOrder,
+    round(sum(SalesAmount*EndOfDayRate),2) as TotalSalesUSD,
+    round(sum((TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalCostUSD,
+    round(sum(SalesAmount*EndOfDayRate-(TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalProfitUSD
+from FactResellerSales f
+left join DimReseller r on f.ResellerKey=r.ResellerKey
+left join FactCurrencyRate cr on f.CurrencyKey=cr.CurrencyKey and f.OrderDateKey=cr.DateKey
+left join DimSalesTerritory terri on f.SalesTerritoryKey = terri.SalesTerritoryKey
+group by f.ResellerKey, ResellerName, SalesTerritoryCountry, YEAR(OrderDate)
+;
+GO
+
+USE AdventureWorksDW2019;
+GO
+CREATE VIEW dbo.Reseller_view AS
+select
+    f.ResellerKey,
+    ResellerName,
+    SalesTerritoryCountry,
+    YEAR(OrderDate) as OrderYear,
+    COUNT(distinct SalesOrderNumber) as NumberOfOrder,
+    round(sum(SalesAmount*EndOfDayRate),2) as TotalSalesUSD,
+    round(sum((TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalCostUSD,
+    round(sum(SalesAmount*EndOfDayRate-(TotalProductCost+TaxAmt+Freight)*EndOfDayRate),2) as TotalProfitUSD
+from FactResellerSales f
+left join DimReseller r on f.ResellerKey=r.ResellerKey
+left join FactCurrencyRate cr on f.CurrencyKey=cr.CurrencyKey and f.OrderDateKey=cr.DateKey
+left join DimSalesTerritory terri on f.SalesTerritoryKey = terri.SalesTerritoryKey
+group by f.ResellerKey, ResellerName, SalesTerritoryCountry, YEAR(OrderDate)
+;
+GO
 
 
