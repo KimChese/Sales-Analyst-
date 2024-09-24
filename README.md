@@ -26,9 +26,10 @@ There is potential to explore strategies to optimize these categories and boost 
 ## Dashboard Preview
 Here’s a preview of the Power BI dashboard created for this project:
 ![image](https://github.com/user-attachments/assets/a4851918-c8a5-4152-b530-f7fca9572663)
-![Model relationship .png](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a748e1-4da4-49f8-ac79-9b11929478dc/8bee3ae7-d4cf-4373-a465-39d65bc6c2ac/Model_relationship_.png)
 
 
+Creating Model Relationship between Table
+<img width="728" alt="Model relationship " src="https://github.com/user-attachments/assets/3e02a5c5-413a-435a-bef0-51ebea78b23e">
 
 The full dashboard file is available [here]https://drive.google.com/file/d/13AsjpE59YyU_orxxG_WdxcDo3xW8EEbW/view?usp=sharing.
 
